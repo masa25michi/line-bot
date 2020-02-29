@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 line-bot-sdk = "*"
 flask = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+mysql-python = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.6"
