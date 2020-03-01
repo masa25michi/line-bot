@@ -24,11 +24,17 @@ class Chapter(db.Model):
     def get_chapter(name, textbook_id):
         return db.session.query(Chapter).filter_by(textbook_id=textbook_id, name=name).first()
 
+    def get_chapter_by_id(chapter_id):
+        return db.session.query(Chapter).filter_by(id=chapter_id).first()
+
+    def get_chapter_by_number(number, textbook_id):
+        return db.session.query(Chapter).filter_by(number=number, textbook_id=textbook_id).first()
+
     def create_chapter(textbook_id, chapter_number):
         new_chapter_name = 'Chapter ' + str(chapter_number)
 
         # check if already exists
-        if (Chapter.get_chapter(new_chapter_name, textbook_id) != None):
+        if Chapter.get_chapter(new_chapter_name, textbook_id) != None:
             print('Chapter Already Existed')
             return 0
 
@@ -38,15 +44,18 @@ class Chapter(db.Model):
 
         return 1
 
-    def get_next_chapter(textbook_id, chapter_id):
-        # not chapter_id.....
-        next_chapter_name = 'Chapter ' + chapter_id
-        next_chapter = Chapter.get_chapter(next_chapter_name, textbook_id)
+    def get_next_chapter(chapter_id):
+        chapter_model = Chapter.get_chapter_by_id(chapter_id)
+        next_chapter_number = int(chapter_model.number) + 1
 
-        if next_chapter == None and next_chapter_name != 'Chapter 1':
-            next_chapter = Chapter.get_chapter('Chapter 1', textbook_id)
+        next_chapter_model = Chapter.get_chapter_by_number(
+            next_chapter_number, chapter_model.textbook_id)
 
-        if next_chapter == None:
-            print('cannot found chapter')
+        if next_chapter_model == None:
+            next_chapter_model = Chapter.get_chapter_by_number(
+                1, chapter_model.textbook_id)
 
-        return next_chapter
+            if next_chapter_model == None:
+                print('cannot found chapter')
+
+        return next_chapter_model

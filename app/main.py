@@ -55,7 +55,7 @@ init_db(app)
 # cron
 scheduler = BackgroundScheduler()
 scheduler.add_job(line_scheduler.notify_morning_vocabs,
-                  trigger='cron', hour='22', minute='5', args=[app, line_bot_api])
+                  trigger='cron', hour='9', minute='0', args=[app, line_bot_api])
 try:
     scheduler.start()
 except (KeyboardInterrupt, SystemExit):

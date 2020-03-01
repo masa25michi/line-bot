@@ -34,9 +34,8 @@ class User(db.Model):
     def update_chapter(line_id):
         print('updating user chapter: ' + line_id)
         user = User.get_user(line_id)
-        next_chapter = Chapter.get_next_chapter(
-            user.textbook_id, user.chapter_id)
+        next_chapter_model = Chapter.get_next_chapter(user.chapter_id)
 
-        if next_chapter != None:
-            user.chapter_id = next_chapter.id
+        if next_chapter_model != None:
+            user.chapter_id = next_chapter_model.id
         db.session.commit()

@@ -19,7 +19,7 @@ def notify_morning_vocabs(app, line_bot_api):
             response = get_words_for_display(words)
 
             # update for next notification
-            # User.update_chapter(user_id)
+            User.update_chapter(user_id)
 
             # send line
             messages = TextSendMessage(text=response)
