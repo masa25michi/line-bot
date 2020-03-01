@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "47dd923aabec0f9f57c8a66d8be4883fab8e5cec99ad029ae424fa0cd76a534f"
+            "sha256": "3f1698decdd85652fe658f200f8084dffaf8360351ebd81811ec2a42827ab057"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -21,6 +21,14 @@
                 "sha256:2df2519a5b002f881517693b95626905a39c5faf4b5a1f94de4f1441095d1d26"
             ],
             "version": "==1.4.0"
+        },
+        "apscheduler": {
+            "hashes": [
+                "sha256:3bb5229eed6fbbdafc13ce962712ae66e175aa214c69bed35a06bffcf0c5e244",
+                "sha256:e8b1ecdb4c7cb2818913f766d5898183c7cb8936680710a4d3a966e02262e526"
+            ],
+            "index": "pypi",
+            "version": "==3.6.3"
         },
         "certifi": {
             "hashes": [
@@ -253,6 +261,13 @@
             ],
             "index": "pypi",
             "version": "==1.3.13"
+        },
+        "tzlocal": {
+            "hashes": [
+                "sha256:11c9f16e0a633b4b60e1eede97d8a46340d042e67b670b290ca526576e039048",
+                "sha256:949b9dd5ba4be17190a80c0268167d7e6c92c62b30026cf9764caf3e308e5590"
+            ],
+            "version": "==2.0.0"
         },
         "urllib3": {
             "hashes": [

@@ -1,5 +1,6 @@
 from datetime import datetime
 from database.sqlalchemy import db
+from models.chapter import Chapter
 
 
 class User(db.Model):
@@ -22,7 +23,20 @@ class User(db.Model):
         print('searching line user id: ' + line_id)
         return db.session.query(User).filter_by(line_id=line_id).first()
 
+    def get_all_users():
+        return db.session.query(User).all()
+
     def create_user(line_id):
         newUser = User(line_id=line_id, textbook_id=5, chapter_id=1)
         db.session.add(newUser)
+        db.session.commit()
+
+    def update_chapter(line_id):
+        print('updating user chapter: ' + line_id)
+        user = User.get_user(line_id)
+        next_chapter = Chapter.get_next_chapter(
+            user.textbook_id, user.chapter_id)
+
+        if next_chapter != None:
+            user.chapter_id = next_chapter.id
         db.session.commit()

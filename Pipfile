@@ -17,6 +17,7 @@ mysqlclient = "*"
 pandas = "*"
 xlrd = "*"
 numpy = "*"
+apscheduler = "*"
 
 [requires]
 python_version = "3.6"

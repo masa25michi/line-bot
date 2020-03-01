@@ -1,4 +1,5 @@
 from models import *
+from app.lib.display_words import get_words_for_display
 
 
 def analyze_user_message(user_message):
@@ -27,17 +28,3 @@ def reply_message(event):
             response = get_words_for_display(words)
 
     return response
-
-
-def get_words_for_display(words):
-    word_counts = 0
-    total_word_counts = len(words)
-    words_for_display = ''
-    for word in words:
-        word_counts += 1
-        words_for_display += word.name + ': ' + word.meaning
-
-        if word_counts != total_word_counts:
-            words_for_display += '\n'
-
-    return words_for_display
