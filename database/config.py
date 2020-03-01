@@ -3,7 +3,7 @@ import os
 
 class DevelopmentConfig:
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://{user}:{password}@{host}/{db}?charset=utf8'.format(**{
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{user}:{password}@{host}/{db}?charset=utf8'.format(**{
         'user': os.getenv('DB_USER', os.environ['DB_USERNAME']),
         'password': os.getenv('DB_PASSWORD', os.environ['DB_PASSWORD']),
         'host': os.getenv('DB_HOST', os.environ['DB_HOSTNAME']),

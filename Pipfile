@@ -6,12 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-line-bot-sdk = "*"
 flask = "*"
+line-bot-sdk = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
-mysql-connector-python = "*"
+pymysql = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.6"
