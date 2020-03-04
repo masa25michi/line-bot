@@ -38,6 +38,9 @@ class Word(db.Model):
     def get_words_by_chapter(chapter_id):
         return db.session.query(Word).filter_by(chapter_id=chapter_id).all()
 
+    def get_words_by_textbook(textbook_id):
+        return Word.query.join(Chapter, Chapter.id == Word.chapter_id).join(Textbook, Textbook.id == Chapter.textbook_id).filter(Textbook.id == textbook_id).all()
+
     def create_word(name, spell, meaning, chapter_id):
         # check if already exists
         if (Word.get_word(name) != None):
@@ -139,54 +142,26 @@ class User(db.Model):
         db.session.commit()
 
 
-Migrate(app, db)
+all_textbooks = Textbook.get_all_textbook()
+for textbook in all_textbooks:
+    words = Word.get_words_by_textbook(textbook.id)
+    new_chapter_count = 1
+    words_count = 1
 
-words_df = pd.read_excel('~/Desktop/n2.xls', skiprows=[0, 1, 2, 3])
+    for word in words:
+        print('loading: ' + word.name)
+        if words_count == 21:
+            print(new_chapter_count)
+            new_chapter_count += 1
+            words_count = 1
 
-word_counts = 1
-chapter_count = 1
-new_words_len = len(words_df)
-max_number_of_words_per_chapter = 30
+        new_chapter_model = Chapter.get_chapter(new_chapter_count, textbook.id)
 
-textbook = Textbook.get_textbook(2)
+        print(new_chapter_model)
 
-if textbook != None:
-    number_of_chapters_need = round(
-        new_words_len / max_number_of_words_per_chapter) + 1
-    # number_of_chapters_need = 2
+        word.chapter_id = new_chapter_model.id
+        db.session.commit()
 
-    print('Number of Chapters: ' + str(number_of_chapters_need))
+        words_count += 1
 
-    for chapter_number in range(number_of_chapters_need):
-        Chapter.create_chapter(textbook.id, chapter_number + 1)
-
-for index, word in words_df.iterrows():
-    if (chapter_count == number_of_chapters_need):
-        print('DONE')
-        break
-
-    chapter = Chapter.get_chapter(chapter_count, textbook.id)
-    chapter_id = chapter.id
-
-    word_name = word['漢字']
-    word_spell = word['単語']
-    word_meaning = word['意味']
-
-    if isinstance(word_name, str) == False:
-        word_name = word_spell
-
-    if Word.get_word(word_name) != None:
-        continue
-
-    while Word.get_words_by_chapter(chapter_id) != None and len(Word.get_words_by_chapter(chapter_id)) >= max_number_of_words_per_chapter:
-        chapter_count += 1
-
-        chapter = Chapter.get_chapter(chapter_count, textbook.id)
-        chapter_id = chapter.id
-
-    if Word.create_word(word_name, word_spell, word_meaning, chapter_id) == 0:
-        continue
-
-    word_counts += 1
-    if word_counts == max_number_of_words_per_chapter:
-        chapter_count += 1
+    break

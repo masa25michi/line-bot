@@ -3,7 +3,7 @@ import atexit
 import app.bot as bot
 import app.scheduler as line_scheduler
 from database.sqlalchemy import init_db
-from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, request, abort
 
 from linebot import (
@@ -53,13 +53,11 @@ app.config.from_object('database.config.Config')
 init_db(app)
 
 # cron
-scheduler = BackgroundScheduler()
-scheduler.add_job(line_scheduler.notify_morning_vocabs,
-                  trigger='cron', hour='9', minute='0', args=[app, line_bot_api])
-try:
-    scheduler.start()
-except (KeyboardInterrupt, SystemExit):
-    print('scheduler failed.....')
-    pass
-
-app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(line_scheduler.notify_morning_vocabs,
+#                   trigger='cron', hour='18', minute='12', args=[app, line_bot_api])
+# try:
+#     scheduler.start()
+# except (KeyboardInterrupt, SystemExit):
+#     print('scheduler failed.....')
+#     pass
