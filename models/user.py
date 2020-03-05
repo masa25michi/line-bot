@@ -27,7 +27,11 @@ class User(db.Model):
         return db.session.query(User).all()
 
     def create_user(line_id):
-        newUser = User(line_id=line_id, textbook_id=5, chapter_id=1)
+        first_textbook_id = 2
+        first_chapter_model = Chapter.get_chapter_by_number(
+            1, first_textbook_id)
+        newUser = User(line_id=line_id, textbook_id=2,
+                       chapter_id=first_chapter_model.id)
         db.session.add(newUser)
         db.session.commit()
 

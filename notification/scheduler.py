@@ -32,16 +32,11 @@ def notify_morning_vocabs():
 
         for user in users:
             user_id = user.line_id
-            # words = Word.get_words(user_id)
-            # response = get_words_for_display(words)
+            words = Word.get_words(user_id)
+            response = get_words_for_display(words)
 
             # # update for next notification
-            # User.update_chapter(user_id)
+            User.update_chapter(user_id)
 
-            # # send line
-            messages = TextSendMessage(
-                text='https://dict.hjenglish.com/jp/jc/' + urllib.parse.quote('大きい'))
-            # line_bot_api.push_message(user_id, messages=messages)
-
-            line_bot_api.push_message(
-                user_id, messages=messages)
+            messages = TextSendMessage(response)
+            line_bot_api.push_message(user_id, messages=messages)
