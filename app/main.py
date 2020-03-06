@@ -1,7 +1,7 @@
 import os
 import atexit
 import app.bot as bot
-import app.scheduler as line_scheduler
+# import app.scheduler as line_scheduler
 from database.sqlalchemy import init_db
 # from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, request, abort
@@ -13,7 +13,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
 )
 
 
@@ -45,8 +45,11 @@ def callback():
 def handle_message(event):
     reply_message = bot.reply_message(event)
 
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=reply_message))
+    flex_message = FlexSendMessage(
+        alt_text='Today \'s Words Here',
+        contents=reply_message)
+
+    line_bot_api.reply_message(event.reply_token, flex_message)
 
 
 app.config.from_object('database.config.Config')

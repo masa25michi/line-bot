@@ -15,7 +15,7 @@ def reply_message(event):
     if (user == None):
         User.create_user(user_line_id)
 
-        response = 'Hi! Please let me know your current level!'
+        response = 'Hi~'
     else:
         user_message = event.message.text
         user_message_type = analyze_user_message(user_message)
@@ -25,6 +25,8 @@ def reply_message(event):
             response = 'You are learning ' + textbook.name
         elif user_message_type == 1:
             words = Word.get_words(user_line_id)
-            response = get_words_for_display(words)
+            chapter = Chapter.get_chapter_by_id(words[0].chapter_id).number
+
+            response = get_words_for_display(words, chapter)
 
     return response
