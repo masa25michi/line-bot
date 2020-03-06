@@ -8,6 +8,7 @@ def analyze_user_message(user_message):
 
 
 def reply_message(event):
+    print(event)
     response = ''
     user_line_id = event.source.sender_id
     user = User.get_user(user_line_id)
@@ -18,6 +19,7 @@ def reply_message(event):
         response = 'Hi~'
     else:
         user_message = event.message.text
+        print('received: ' + user_message)
         user_message_type = analyze_user_message(user_message)
 
         if user_message_type == 0:

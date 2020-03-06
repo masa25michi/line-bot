@@ -43,10 +43,16 @@ def get_words_for_display(words, chapter):
                 "size": "sm",
                 "margin": "lg",
                 "wrap": True,
+                # "action": {
+                #     "type": "uri",
+                #     "label": "action",
+                #     "uri": "http://linecorp.com/"
+                # },
                 "action": {
-                    "type": "uri",
+                    "type": "postback",
                     "label": "action",
-                    "uri": "http://linecorp.com/"
+                    "data": word.name,
+                    "displayText": word.name
                 }
             }
         )

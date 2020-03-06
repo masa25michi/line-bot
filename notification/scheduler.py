@@ -44,12 +44,12 @@ def notify_morning_vocabs():
                 alt_text='Today \'s Words Here',
                 contents=notification_message)
 
-            sticker_message = StickerSendMessage(
-                package_id='11538',
-                sticker_id='51626503'
-            )
+            # sticker_message = StickerSendMessage(
+            #     package_id='11538',
+            #     sticker_id='51626503'
+            # )
 
             line_bot_api.push_message(
-                user_id, messages=[messages, sticker_message, flex_message])
+                user_id, messages=[messages, flex_message])
 
             break

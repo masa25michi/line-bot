@@ -1,6 +1,9 @@
 import os
 import atexit
 import app.bot as bot
+import requests
+import json
+import pprint
 # import app.scheduler as line_scheduler
 from database.sqlalchemy import init_db
 # from apscheduler.schedulers.background import BackgroundScheduler
@@ -13,7 +16,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
+    MessageEvent, PostbackEvent, TextMessage, TextSendMessage, FlexSendMessage
 )
 
 
@@ -52,15 +55,84 @@ def handle_message(event):
     line_bot_api.reply_message(event.reply_token, flex_message)
 
 
+@handler.add(PostbackEvent)
+def on_postback(event):
+    word = event.postback.data
+    params = {
+        'keyword': word,
+    }
+    r = requests.get(
+        'https://jisho.org/api/v1/search/words',
+        params=params)
+    response = r.json()
+
+    examples = [
+        {
+            "type": "text",
+            "text": word,
+            "weight": "bold",
+            "size": "xl"
+        },
+        {
+            "type": "separator"
+        }
+    ]
+    count = 1
+    for data in response['data']:
+        example = data['japanese'][0]
+
+        examples.append({
+            "type": "text",
+            "wrap": True,
+            "text": ' [' + str(count) + ']  ' + example['word'] +
+            ' (' + example['reading'] + ') \n'
+        })
+
+        count += 1
+
+    messages = {
+        "type": "bubble",
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": examples
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "spacing": "sm",
+            "contents": [
+                {
+                    "type": "button",
+                    "style": "link",
+                    "height": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "❤️ Favorite",
+                        "uri": "https://linecorp.com"
+                    }
+                },
+                {
+                    "type": "button",
+                    "style": "link",
+                    "height": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "More Detail",
+                        "uri": "https://linecorp.com"
+                    }
+                }
+            ],
+            "flex": 0
+        }
+    }
+
+    flex_message = FlexSendMessage(
+        alt_text='Example Here',
+        contents=messages)
+
+    line_bot_api.reply_message(event.reply_token, flex_message)
+
+
 app.config.from_object('database.config.Config')
 init_db(app)
-
-# cron
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(line_scheduler.notify_morning_vocabs,
-#                   trigger='cron', hour='18', minute='12', args=[app, line_bot_api])
-# try:
-#     scheduler.start()
-# except (KeyboardInterrupt, SystemExit):
-#     print('scheduler failed.....')
-#     pass
