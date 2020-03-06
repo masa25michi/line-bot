@@ -81,12 +81,16 @@ def on_postback(event):
     for data in response['data']:
         example = data['japanese'][0]
 
+        if 'word' in example:
+            text = ' [' + str(count) + ']  ' + example['word'] + \
+                ' (' + example['reading'] + ') \n'
+        else:
+            text = ' [' + str(count) + ']  ' + example['reading'] + ' \n'
+
         examples.append({
             "type": "text",
             "wrap": True,
-            "text": ' [' + str(count) + ']  ' + example['word'] +
-            ' (' + example['reading'] + ') \n'
-        })
+            "text": text})
 
         count += 1
 
@@ -107,9 +111,10 @@ def on_postback(event):
                     "style": "link",
                     "height": "sm",
                     "action": {
-                        "type": "uri",
-                        "label": "❤️ Favorite",
-                        "uri": "https://linecorp.com"
+                        "type": "postback",
+                        "label": "'❤️ Favorite",
+                        "data": word,
+                        "displayText": word
                     }
                 },
                 {
