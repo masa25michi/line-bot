@@ -112,7 +112,7 @@ def on_postback(event):
                     "height": "sm",
                     "action": {
                         "type": "postback",
-                        "label": "'❤️ Favorite",
+                        "label": "❤️ Favorite",
                         "data": word,
                         "displayText": word
                     }
