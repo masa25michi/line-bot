@@ -28,6 +28,9 @@ class Word(db.Model):
         print('searching word: ' + name)
         return db.session.query(Word).filter_by(name=name).first()
 
+    def get_word_by_id(id):
+        return db.session.query(Word).filter_by(id=id).first()
+
     def get_words_by_chapter(chapter_id):
         return db.session.query(Word).filter_by(chapter_id=chapter_id).all()
 

@@ -63,7 +63,7 @@ def get_words_for_display(words, chapter):
                         "action": {
                             "type": "postback",
                             "label": 'Detail',
-                            "data": word.name,
+                            "data": word.id,
                             "displayText": word.name
                         },
                         "position": "absolute",

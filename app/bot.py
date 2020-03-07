@@ -40,64 +40,90 @@ def reply_message(event):
 
 
 def reply_postback(event):
-    word = event.postback.data
-    params = {'keyword': word}
-    r = requests.get(
-        'https://jisho.org/api/v1/search/words',
-        params=params)
-    response = r.json()
+    word_id = event.postback.data
+    word_model = Word.get_word_by_id(word_id)
+    # params = {'keyword': word}
+    # r = requests.get(
+    #     'https://jisho.org/api/v1/search/words',
+    #     params=params)
+    # response = r.json()
 
-    examples = [
-        # {
-        #     "type": "text",
-        #     "text": word,
-        #     "weight": "bold",
-        #     "size": "xl"
-        # },
-        # {
-        #     "type": "separator"
-        # }
-    ]
-    count = 1
-    for data in response['data']:
-        example = data['japanese'][0]
+    # pp = pprint.PrettyPrinter(indent=4)
 
-        # text = '・ '
+    # pp.pprint(response)
 
-        if 'word' in example:
-            text = example['word'] + \
-                ' (' + example['reading'] + ') \n'
-        else:
-            text = example['reading'] + ' \n'
+    # examples = [
+    # {
+    #     "type": "text",
+    #     "text": word,
+    #     "weight": "bold",
+    #     "size": "xl"
+    # },
+    # {
+    #     "type": "separator"
+    # }
+    # ]
+    # count = 1
+    # for data in response['data']:
+    # example = data['japanese'][0]
 
-        examples.append({
-            "type": "text",
-            "size": "xs",
-            "wrap": True,
-            "text": text})
+    # text = '・ '
 
-        count += 1
+    # if 'word' in example:
+    #     text = example['word'] + \
+    #         ' (' + example['reading'] + ') \n'
+    # else:
+    #     text = example['reading'] + ' \n'
+
+    # examples.append({
+    #     "type": "text",
+    #     "size": "xs",
+    #     "wrap": True,
+    #     "text": text
+    # })
+
+    # count += 1
+
+    # examples.append({
+    #     "type": "text",
+    #     "size": "xs",
+    #     "wrap": True,
+    #     "text": text
+    # })
 
     messages = {
         "type": "bubble",
         "header": {
             "type": "box",
-                    "layout": "vertical",
-                    "backgroundColor": "#800000",
-                    "align": "center",
-                    "size": "lg",
-                    "contents": [
-                        {
-                            "type": "text",
-                            "color": "#FFFFFF",
-                            "text": word
-                        },
-                    ],
+            "layout": "vertical",
+            "backgroundColor": "#800000",
+            "align": "center",
+            "size": "lg",
+            "contents": [
+                {
+                    "type": "text",
+                    "color": "#FFFFFF",
+                    "text": word_model.name
+                },
+            ],
         },
         "body": {
             "type": "box",
             "layout": "vertical",
-            "contents": examples
+            "contents": [
+                {
+                    "type": "text",
+                    "size": "md",
+                    "wrap": True,
+                    "text": 'いみ:  ' + word_model.meaning
+                },
+                {
+                    "type": "text",
+                    "size": "md",
+                    "wrap": True,
+                    "text": 'よみ:  ' + word_model.spell
+                }
+            ]
         },
         "footer": {
             "type": "box",
@@ -114,8 +140,8 @@ def reply_postback(event):
                     "action": {
                         "type": "postback",
                         "label": "Favorite",
-                        "data": word,
-                        "displayText": word
+                        "data": word_model.id,
+                        "displayText": word_model.name
                     }
                 },
                 {
@@ -124,12 +150,32 @@ def reply_postback(event):
                     "height": "sm",
                     "action": {
                         "type": "uri",
-                        "label": "More Detail",
-                        "uri": "https://jisho.org/word/" + word
+                        "label": "Dictionary",
+                        "uri": "https://jisho.org/search/" + word_model.name + "%20%23words"
+                    }
+                },
+                {
+                    "type": "button",
+                    "style": "link",
+                    "height": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "Kanji",
+                        "uri": "https://jisho.org/search/" + word_model.name + "%20%23kanji"
+                    }
+                },
+                {
+                    "type": "button",
+                    "style": "link",
+                    "height": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "Sentences",
+                        "uri": "https://jisho.org/search/" + word_model.name + "%20%23sentences"
                     }
                 }
             ],
             "flex": 0
         }
     }
-    return FlexSendMessage(alt_text=word + 'ってどういう意味？', contents=messages)
+    return FlexSendMessage(alt_text=word_model.name + 'ってどういう意味？', contents=messages)
