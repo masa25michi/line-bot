@@ -47,7 +47,7 @@ def get_words_for_display(words, chapter):
                         "wrap": True,
                         "position": "absolute",
                         "offsetEnd": "75px",
-                        "offsetStart": "10px",
+                        "offsetStart": "1px",
                         "size": "sm"
                     },
                     {
