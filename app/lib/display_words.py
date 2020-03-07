@@ -25,7 +25,8 @@ def get_words_for_display(words, chapter):
     word_counts = 0
     sub_chapter_count = 1
     for word in words:
-        words_for_display = '[' + str(word_counts + 1) + ']   '
+        # words_for_display = '[' + str(word_counts + 1) + ']   '
+        words_for_display = ''
 
         if word.name == word.spell:
             words_for_display += word.name + ':  ' + word.meaning
@@ -43,12 +44,19 @@ def get_words_for_display(words, chapter):
                 "contents": [
                     {
                         "type": "text",
+                        "text": str(word_counts + 1) + ')  ',
+                        "wrap": True,
+                        "offsetStart": "-1px",
+                        "size": "xs"
+                    },
+                    {
+                        "type": "text",
                         "text": words_for_display,
                         "wrap": True,
                         "position": "absolute",
-                        "offsetEnd": "75px",
-                        "offsetStart": "1px",
-                        "size": "sm"
+                        "offsetEnd": "53px",
+                        "offsetStart": "22px",
+                        "size": "xs"
                     },
                     {
                         "type": "button",
@@ -60,7 +68,7 @@ def get_words_for_display(words, chapter):
                         },
                         "position": "absolute",
                         "style": "link",
-                        "offsetEnd": "-2px",
+                        "offsetEnd": "-15px",
                         "offsetBottom": "21px",
                         "height": "sm"
                     }

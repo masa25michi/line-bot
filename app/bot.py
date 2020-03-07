@@ -48,28 +48,31 @@ def reply_postback(event):
     response = r.json()
 
     examples = [
-        {
-            "type": "text",
-            "text": word,
-            "weight": "bold",
-            "size": "xl"
-        },
-        {
-            "type": "separator"
-        }
+        # {
+        #     "type": "text",
+        #     "text": word,
+        #     "weight": "bold",
+        #     "size": "xl"
+        # },
+        # {
+        #     "type": "separator"
+        # }
     ]
     count = 1
     for data in response['data']:
         example = data['japanese'][0]
 
+        # text = '・ '
+
         if 'word' in example:
-            text = ' [' + str(count) + ']  ' + example['word'] + \
+            text = example['word'] + \
                 ' (' + example['reading'] + ') \n'
         else:
-            text = ' [' + str(count) + ']  ' + example['reading'] + ' \n'
+            text = example['reading'] + ' \n'
 
         examples.append({
             "type": "text",
+            "size": "xs",
             "wrap": True,
             "text": text})
 
@@ -77,6 +80,20 @@ def reply_postback(event):
 
     messages = {
         "type": "bubble",
+        "header": {
+            "type": "box",
+                    "layout": "vertical",
+                    "backgroundColor": "#800000",
+                    "align": "center",
+                    "size": "lg",
+                    "contents": [
+                        {
+                            "type": "text",
+                            "color": "#FFFFFF",
+                            "text": word
+                        },
+                    ],
+        },
         "body": {
             "type": "box",
             "layout": "vertical",
@@ -87,6 +104,9 @@ def reply_postback(event):
             "layout": "vertical",
             "spacing": "sm",
             "contents": [
+                {
+                    "type": "separator"
+                },
                 {
                     "type": "button",
                     "style": "link",
