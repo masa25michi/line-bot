@@ -38,22 +38,34 @@ def get_words_for_display(words, chapter):
 
         word_contents[str(sub_chapter_count)].append(
             {
-                "type": "text",
-                "text": words_for_display,
-                "size": "sm",
-                "margin": "lg",
-                "wrap": True,
-                # "action": {
-                #     "type": "uri",
-                #     "label": "action",
-                #     "uri": "http://linecorp.com/"
-                # },
-                "action": {
-                    "type": "postback",
-                    "label": "action",
-                    "data": word.name,
-                    "displayText": word.name
-                }
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "text",
+                        "text": words_for_display,
+                        "wrap": True,
+                        "position": "absolute",
+                        "offsetEnd": "75px",
+                        "offsetStart": "10px",
+                        "size": "sm"
+                    },
+                    {
+                        "type": "button",
+                        "action": {
+                            "type": "postback",
+                            "label": 'Detail',
+                            "data": word.name,
+                            "displayText": word.name
+                        },
+                        "position": "absolute",
+                        "style": "link",
+                        "offsetEnd": "-2px",
+                        "offsetBottom": "21px",
+                        "height": "sm"
+                    }
+                ],
+                "height": "50px"
             }
         )
 
@@ -71,6 +83,8 @@ def get_words_for_display(words, chapter):
                     "type": "box",
                     "layout": "vertical",
                     "backgroundColor": "#800000",
+                    "align": "center",
+                    "size": "lg",
                     "contents": [
                         {
                             "type": "text",
